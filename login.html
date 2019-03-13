@@ -34,16 +34,16 @@
 </head>
 <body>
 <div class="login-form">
-    <form action="/examples/actions/confirmation.php" method="post">
+    <form>
         <h2 class="text-center">Log in</h2>       
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="Username" required="required">
+            <input type="text" name="name" class="form-control" placeholder="Username" required="required">
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password" required="required">
+            <input type="password" name="password" class="form-control" placeholder="Password" required="required">
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+            <button type="submit" class="btn btn-primary btn-block" onclick="passWord()">Log in</button>
         </div>
         <div class="clearfix">
             <label class="pull-left checkbox-inline"><input type="checkbox"> Remember me</label>
@@ -52,5 +52,28 @@
     </form>
     <p class="text-center"><a href="#">Create an Account</a></p>
 </div>
+
+<script>
+    function passWord() {
+        var testV = 1;
+        var pass1 = document.getElementsByTagName("H1")[0].getAttribute("name");
+        window.open('public.html',"_self");
+        // while (testV < 3) {
+        //     if (!pass1) 
+        //         history.go(-1);
+        //     if (pass1.toLowerCase() == "rose") {
+        //         window.open('rose.html',"_self");
+        //         break;
+        //     } 
+        //     testV+=1;
+        //     var pass1 = 
+        //     prompt('Access Denied - Password Incorrect, Please Try Again.','Password');
+        // }
+
+        // if (pass1.toLowerCase()!="password" & testV ==3) 
+        // history.go(-1);
+        // return " ";
+    } 
+</script>
 </body>
 </html>                                		                            
