@@ -1,39 +1,68 @@
-var coords = [];
+var map;
+var marker;
+var infowindow;
+var messagewindow;
 
-function myMap()
-{
-    var exists = false;
+function initMap() {
+  var california = {lat: 32.77663093727863, lng: -117.06921800036321};
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: california,
+    zoom: 13
+  });
 
-    myCenter=new google.maps.LatLng(32.77663093727863, -117.06921800036321);
-    var mapOptions= {
-        center:myCenter,
-        zoom:12, scrollwheel: true, draggable: true,
-        mapTypeId:google.maps.MapTypeId.ROADMAP
-    };
-    var map=new google.maps.Map(document.getElementById("googleMap"),mapOptions);
+  infowindow = new google.maps.InfoWindow({
+    content: document.getElementById('form')
+  });
 
-    google.maps.event.addListener(map, 'click', function(event) {
-        placeMarker(event.latLng);
+  messagewindow = new google.maps.InfoWindow({
+    content: document.getElementById('message')
+  });
+
+  google.maps.event.addListener(map, 'click', function(event) {
+    marker = new google.maps.Marker({
+      position: event.latLng,
+      map: map
     });
-    
-    function placeMarker(location) {
-        if(!exists){
-            let marker = new google.maps.Marker({
-                position: location, 
-                map: map,
-                draggable: true
-            });
-            coords[0] = location.lat();
-            coords[1] = location.lng();
-            google.maps.event.addListener(marker, 'dragend', function() {
-                coords[0] = marker.getPosition().lat();
-                coords[1] = marker.getPosition().lng();
-                console.log(coords[0],coords[1]);
-            });
-            console.log(coords);
-            exists = true;
-        }
-    }
-    
-    // marker.setMap(map);
+
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.open(map, marker);
+    });
+  });
 }
+
+function saveData() {
+  var name = escape(document.getElementById('name').value);
+  var comment = escape(document.getElementById('comment').value);
+  var type = document.getElementById('type').value;
+  var latlng = marker.getPosition();
+  var url = 'phpsqlinfo_addrow.php?name=' + name + '&comment=' + comment +
+      '&type=' + type + '&lat=' + latlng.lat() + '&lng=' + latlng.lng();
+
+  downloadUrl(url, function(data, responseCode) {
+
+    if (responseCode == 200 && data.length <= 1) {
+      infowindow.close();
+      messagewindow.open(map, marker);
+    }
+  });
+}
+
+function downloadUrl(url, callback) {
+  var request = window.ActiveXObject ?
+      new ActiveXObject('Microsoft.XMLHTTP') :
+  new XMLHttpRequest;
+
+  request.onreadystatechange = function() {
+    if (request.readyState == 4) {
+      request.onreadystatechange = doNothing;
+      callback(request.responseText, request.status);
+    }
+  };
+
+  request.open('GET', url, true);
+  request.send(null);
+}
+
+function doNothing () {
+}
+
