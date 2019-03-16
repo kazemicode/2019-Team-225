@@ -12,12 +12,6 @@ function myMap()
     };
     var map=new google.maps.Map(document.getElementById("googleMap"),mapOptions);
 
-    // google.maps.event.addListener(marker, 'dragend', function() {
-    //     coords[0] = marker.getPosition().lat();
-    //     coords[1] = marker.getPosition().lng();
-    //     console.log(coords[0],coords[1]);
-    // })
-
     google.maps.event.addListener(map, 'click', function(event) {
         placeMarker(event.latLng);
     });
