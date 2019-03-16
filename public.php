@@ -2,11 +2,6 @@
     if (isset($_POST["name"])) $name = $_POST["name"];
     else $name = "none";
     
-    
-    
-    
-    
-    
     echo <<<_END
     <!DOCTYPE html>
     <html>
